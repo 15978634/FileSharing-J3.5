@@ -8,5 +8,4 @@ public class Main {
 		System.out.println("hii");
 		System.out.println("hiii");
 	}
-
 }
