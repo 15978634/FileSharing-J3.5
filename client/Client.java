@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.EventQueue;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -11,9 +12,12 @@ public class Client {
 	public static Socket socket;
 	TcpConnection clientConnection;
 	public static void main(String[] args){
-		
+		EventQueue.invokeLater(() ->{
+			Gui gui = new Gui();
+			gui.setVisible(true);
+		});
 	}
-	private void connectSocket(String ip){
+	public static void connectSocket(String ip){
 		try {
 			socket = new Socket(ip , DEFAULT_PORT);
 			connectionInit(socket);	

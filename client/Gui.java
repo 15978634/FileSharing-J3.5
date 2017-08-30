@@ -27,7 +27,7 @@ public class Gui extends JFrame{
 		field.setBounds(30, 10, 200, 25);
 		field.addActionListener((ActionEvent e) -> {
 			field.getText();
-            System.out.println(field.getText());
+            Client.connectSocket(field.getText());
         });
 		
 		JButton btn = new JButton("Connect");
@@ -36,7 +36,7 @@ public class Gui extends JFrame{
 		btn.setToolTipText("A Tooltip");
 		btn.addActionListener((ActionEvent e) -> {
 			field.getText();
-            System.out.println(field.getText());
+            Client.connectSocket(field.getText());
         });
 		
 		add(btn);
