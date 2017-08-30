@@ -1,15 +1,10 @@
 package client;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.io.File;
 
 import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
