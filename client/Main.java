@@ -6,10 +6,12 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class Main {
+	
+	
 	public static Socket s = null;
 	public static void main(String[] args)throws Exception {
 
-		String msg = "hallo";
+		String msg = "anderes wort";
 		String ip = "192.168.60.132";
 		int port = 8887;
 		connect(ip, port);
@@ -18,11 +20,10 @@ public class Main {
 			System.out.println("Socket is null");
 		}
 		BufferedReader r = new BufferedReader(new InputStreamReader(s.getInputStream()));
-		//BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		DataOutputStream out = new DataOutputStream(s.getOutputStream());
 		System.out.println(r.readLine());
 		
-		System.out.println(msg);
+		System.out.println("sent: " + msg);
 		out.writeBytes(msg);
 		s.close();
 		System.out.println("Socket closed");
