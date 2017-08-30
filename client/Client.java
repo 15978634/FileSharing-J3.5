@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.net.Socket;
@@ -7,19 +8,17 @@ import java.net.UnknownHostException;
 
 public class Client {
 	
-	private static final int DEFAULT_PORT = 8887;
-	private static String ip;
 	public static Socket socket;
 	TcpConnection clientConnection;
 	public static void main(String[] args){
 		EventQueue.invokeLater(() ->{
 			Gui gui = new Gui();
-			gui.setVisible(true);
+			gui.frame.setVisible(true);
 		});
 	}
-	public static void connectSocket(String ip){
+	public static void connectSocket(String ip, int port){
 		try {
-			socket = new Socket(ip , DEFAULT_PORT);
+			socket = new Socket(ip , port);
 			connectionInit(socket);	
 			System.out.println("Socket connected!");
 		} catch (UnknownHostException e) {
