@@ -4,10 +4,11 @@ import java.net.Socket;
 
 public class ClientDownload implements Runnable {
 
-private Socket downloadSocket;
-	
-	public ClientDownload(Socket downloadSocket) {
-		this.downloadSocket = downloadSocket;
+	private Socket fileshareSocket;
+	private int fileId;
+	public ClientDownload(Socket fileshareSocket, int fileId) {
+		this.fileshareSocket = fileshareSocket;
+		this.fileId = fileId;
 	}
 	
 	@Override
