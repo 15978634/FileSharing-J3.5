@@ -5,46 +5,72 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class TcpConnection implements Runnable{
-	Socket connection;
-	DataInputStream input;
-	DataOutputStream output;
-	String recmsg;
-	public TcpConnection(Socket s){
-		connection = s;
+	private Socket connection;
+	private DataInputStream input;
+	private DataOutputStream output;
+	private int timeout;
+	
+	public TcpConnection(Socket connection) throws IOException{
+		this.connection = connection;
+		input = new DataInputStream(connection.getInputStream());
+		output = new DataOutputStream(connection.getOutputStream());
+		this.run();
 	}
 	@Override
 	public void run() {
-		
-		try {
-			input = new DataInputStream(connection.getInputStream());
-			output = new DataOutputStream(connection.getOutputStream());
-		}
-        catch (IOException e) {
-        e.printStackTrace();
-        }
-		//try catch
-		while(!Thread.currentThread().isInterrupted()){
-			try{
-				// available check
-			recmsg = input.readUTF();
-				if(recmsg != null){
-					//handlemsg
+		try{
+			while(!Thread.currentThread().isInterrupted()){
+				if(input.available()>0){
+					int code = input.readInt();
+					switch(code){
+					case 1:{
+						
+					break; //file list
+					}
+					case 2: break;
+					case 3: break;
+					}
+					System.out.println("received: " + code);
 				}
-			}
-			catch(IOException e){
-				e.printStackTrace();
+				if(timeout>5000){
+					this.sendCode(3);
+				}
+				if(!Thread.currentThread().isInterrupted()){
+					Thread.sleep(10);
+					timeout++;
+				}
+				
 			}
 		}
-		// in finally socket u. streams schlieﬂen
-    }
+		catch(Exception e){
+			
+		}
+		finally{
+			try {
+				connection.close();
+				input.close();
+				output.close();
+			} catch (IOException e) {
+			}
+		}
+	}
 
 	void sendMessage(String message){
 		try {
 			output.writeBytes(message);
+			System.out.println("sent: " + message);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+	}
+	void sendCode (int code){
+		try {
+			output.writeInt(code);
+			System.out.println("sent: " + code);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

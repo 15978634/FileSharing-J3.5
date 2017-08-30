@@ -17,6 +17,7 @@ public class Client {
 		try {
 			socket = new Socket(ip , DEFAULT_PORT);
 			connectionInit(socket);	
+			System.out.println("Socket connected!");
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
