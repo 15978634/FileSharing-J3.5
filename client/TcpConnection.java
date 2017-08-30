@@ -19,18 +19,19 @@ public class TcpConnection implements Runnable{
 	@Override
 	public void run() {
 		try{
+			
 			while(!Thread.currentThread().isInterrupted()){
 				if(input.available()>0){
 					int code = input.readInt();
+					String msg = input.readUTF();
 					switch(code){
 					case 1:{
-						
 					break; //file list
 					}
-					case 2: break;
+					case 2: break;//server shutdown
 					case 3: break;
 					}
-					System.out.println("received: " + code);
+					System.out.println("received: " + code + " message: " + msg);
 				}
 				if(timeout>5000){
 					this.sendCode(3);
