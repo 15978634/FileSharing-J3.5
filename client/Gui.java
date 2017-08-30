@@ -5,13 +5,15 @@ import java.awt.event.ActionEvent;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class Gui extends JFrame{
+	
+	public JFrame frame;
 
 	public Gui()
 	{
@@ -20,32 +22,62 @@ public class Gui extends JFrame{
 	
 	private void initUI()
 	{	
+		 frame = new JFrame();
+	
+		JFileChooser downloadchooser = new JFileChooser();
+		downloadchooser.setBackground(Color.WHITE);
+		downloadchooser.setBounds(350, 100, 200, 200);
+		downloadchooser.setVisible(false);
+		downloadchooser.showOpenDialog(frame.getParent());
 		
-		setLayout(null);
+		frame.setLayout(null);
+		JTextField pfield = new JTextField();
+		pfield.setBackground(Color.WHITE);
+		pfield.setBounds(30, 40, 200, 25);
+		pfield.addActionListener((ActionEvent e) -> {
+        });
+		
 		JTextField field = new JTextField();
 		field.setBackground(Color.WHITE);
 		field.setBounds(30, 10, 200, 25);
 		field.addActionListener((ActionEvent e) -> {
-			field.getText();
-            Client.connectSocket(field.getText());
         });
 		
 		JButton btn = new JButton("Connect");
-		btn.setBounds(30, 50, 100, 40);
+		btn.setBounds(150, 150, 100, 40);
 		btn.setBackground(Color.WHITE);
-		btn.setToolTipText("A Tooltip");
 		btn.addActionListener((ActionEvent e) -> {
 			field.getText();
-            Client.connectSocket(field.getText());
+            Client.connectSocket(field.getText(), Integer.parseInt(pfield.getText()));
         });
 		
-		add(btn);
-		add(field);
+		JButton download = new JButton("Download");
+		download.setBounds(350, 150, 100, 40);
+		download.setBackground(Color.WHITE);
+		download.addActionListener((ActionEvent e) -> {
+			downloadchooser.setVisible(true);
+        });
 		
-		setTitle("FileSharing");
-		setSize(1000, 1000);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		JButton upload = new JButton("Upload");
+		upload.setBounds(550, 150, 100, 40);
+		upload.setBackground(Color.WHITE);
+		upload.addActionListener((ActionEvent e) -> {
+			field.getText();
+        });
+		
+		
+		frame.add(downloadchooser);
+		frame.add(download);
+		frame.add(upload);
+		frame.add(btn);
+		frame.add(field);
+		frame.add(pfield);
+		
+		frame.getContentPane().setBackground( Color.decode("#2196F3"));
+		frame.setTitle("FileSharing");
+		frame.setSize(800, 300);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	private void createLayout(JComponent...arg)
@@ -53,8 +85,6 @@ public class Gui extends JFrame{
 		JPanel pane = (JPanel) getContentPane();
         GroupLayout gl = new GroupLayout(pane);
         pane.setLayout(gl);
-
-        pane.setToolTipText("Content pane");
 
         gl.setAutoCreateContainerGaps(true);
 
