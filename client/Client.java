@@ -1,6 +1,5 @@
 package client;
 
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.net.Socket;
@@ -14,6 +13,7 @@ public class Client {
 		EventQueue.invokeLater(() ->{
 			Gui gui = new Gui();
 			gui.frame.setVisible(true);
+			
 		});
 	}
 	public static void connectSocket(String ip, int port){
