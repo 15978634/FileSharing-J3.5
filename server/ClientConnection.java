@@ -20,9 +20,6 @@ public class ClientConnection implements Runnable {
 		outputStream = new DataOutputStream(clientSocket.getOutputStream());
 		timeoutCounter = 0;
 		this.clientSocket = clientSocket;
-		for (ServerFile file : Server.getFiles()) {
-			mQ.add(new ServerMessage(1, file.getName()));
-		}
 	}
 	
 	
@@ -33,6 +30,13 @@ public class ClientConnection implements Runnable {
 	@Override
 	public void run() {
 		try {
+			
+			outputStream.writeInt(Server.getFiles().size());
+			
+			for (ServerFile file : Server.getFiles()) {
+				outputStream.writeUTF(file.getName());
+			}
+			
 			while(!Thread.currentThread().isInterrupted()) {
 				if (timeoutCounter < 1000) {
 					
@@ -45,7 +49,9 @@ public class ClientConnection implements Runnable {
 							
 							case 2: fileDownload();
 									break; //client will file hochladen
-							case 3: break; //heartbeat
+									
+							case 3: System.out.println("heartbeat");
+									break; //heartbeat
 						}
 						timeoutCounter = 0;
 					} else {

@@ -2,10 +2,14 @@ package server;
 public class ServerFile {
 	
 	private String name;
-	private String content;
-	
-	public ServerFile(String name, String content) {
-	
+	private String location;
+	private int id;
+	private int size;
+	public ServerFile(String name, String location, int id, int size) {
+		this.name = name;
+		this.setLocation(location);
+		this.setId(id);
+		this.size = size;
 	}
 	
 	
@@ -15,10 +19,33 @@ public class ServerFile {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getContent() {
-		return content;
+	
+	public String getLocation() {
+		return location;
 	}
-	public void setContent(String content) {
-		this.content = content;
+
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public int getSize() {
+		return size;
+	}
+
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 }

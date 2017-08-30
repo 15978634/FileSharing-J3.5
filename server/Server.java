@@ -1,23 +1,20 @@
 package server;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.*;
-import java.nio.CharBuffer;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
 
-	private static final int DEFAULT_PORT = 8887;
+	private static final int DEFAULT_PORT = 50002;
 	private ServerSocket listener;
 	private ExecutorService executor;
 	private ArrayList<ClientConnection> clients;
 	private static ArrayList<ServerFile> files;
-	private Socket uploadSocket;
-	private Socket downloadSocket;
 	private File sourceDirectory = new File("//SLEEPLESS/homes$/lukaweis17/Documents/GitHub/FileSharing Project/FileSharing/FileSharing-J3.5/ServerFiles");
 	
 	public static void main(String[] args) {
@@ -33,29 +30,29 @@ public class Server {
 		}
 	}
 	
-	private void initializeFiles(){
+	private void initializeFiles() throws IOException{
 		for (File f : sourceDirectory.listFiles()) {
-			String fileName = f.getName();
-			FileReader fr = null;
-			try {
-				fr = new FileReader(fileName);
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			CharBuffer c = null ;
-			try {
-				fr.read(c);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			files.add(new ServerFile(f.getName(), c.toString()));
-			System.out.println("Name: " + f.getName() + " \n Content:" + c.toString());
+			/*String fileName = f.toString();
+			FileInputStream fInputStream = new FileInputStream(f);
+			fInputStream.
+			/*int length = fInputStream.available();
+			byte[] content = new byte[length];
+				fInputStream.read(content);*/
+			files.add(new ServerFile(f.getName(), f.toString(), files.indexOf(f), (int) f.length()));
 		}
 	}
 	
+	
+	
 	public Server() {
-		//initializeFiles();
+		files = new ArrayList<ServerFile>();
+		clients = new ArrayList<ClientConnection>();
+		try {
+			initializeFiles();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		executor = Executors.newCachedThreadPool();
 		
 		try {
@@ -81,6 +78,7 @@ public class Server {
 				System.err.println(e);
 		}
 	}
+	
 	public static ArrayList<ServerFile> getFiles() {
 		return files;
 	}
