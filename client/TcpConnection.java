@@ -25,13 +25,15 @@ public class TcpConnection implements Runnable{
 	@Override
 	public void run() {
 		try{
-			
+			System.out.printIn("test");
 			int length = input.readInt();
+			System.out.printIn(length); 
 			for(int i = 0; i<length; i++){
 				String name = input.readUTF();
 				int id = input.readInt();
 				int size = input.readInt();
 				files.add(new SharedFile(name,id,size));
+				    
 			}
 			
 			while(!Thread.currentThread().isInterrupted()){

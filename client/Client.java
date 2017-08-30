@@ -30,6 +30,7 @@ public class Client {
 		}
 	}
 	private static void connectionInit(Socket s) throws IOException{
-		new TcpConnection(s);
+		
+		new Thread(new TcpConnection(s)).start();;
 	}
 }
