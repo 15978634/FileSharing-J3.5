@@ -1,47 +1,31 @@
 package client;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Client {
 	
-	
-	public static Socket s = null;
-	public static void main(String[] args)throws Exception {
-
-		String msg = "anderes wort";
-		String ip = "192.168.60.132";
-		int port = 8887;
-		connect(ip, port);
-		System.out.println("Connected!");
-		if(s == null){
-			System.out.println("Socket is null");
-		}
-		BufferedReader r = new BufferedReader(new InputStreamReader(s.getInputStream()));
-		DataOutputStream out = new DataOutputStream(s.getOutputStream());
-		System.out.println(r.readLine());
-		
-		System.out.println("sent: " + msg);
-		out.writeBytes(msg);
-		s.close();
-		System.out.println("Socket closed");
+	private static final int DEFAULT_PORT = 8887;
+	private static String ip;
+	public static Socket socket;
+	TcpConnection clientConnection;
+	public static void main(String[] args){
 		
 	}
-	static void connect(String ip, int PORT){
-		
-
+	private void connectSocket(String ip){
 		try {
-			s = new Socket(ip , PORT);
-		} catch (Exception e) {
+			socket = new Socket(ip , DEFAULT_PORT);
+			connectionInit(socket);	
+		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("Connection failed!");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
 	}
-	
-	
-
+	private static void connectionInit(Socket s) throws IOException{
+		new TcpConnection(s);
+	}
 }
