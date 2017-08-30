@@ -5,7 +5,7 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class Main {
+public class Client {
 	
 	
 	public static Socket s = null;
