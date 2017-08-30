@@ -3,34 +3,52 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class TcpConnection implements Runnable{
 	private Socket connection;
 	private DataInputStream input;
 	private DataOutputStream output;
 	private int timeout;
+	private ArrayList<SharedFile> files;
 	
+	public ArrayList<SharedFile> getFiles() {
+		synchronized(files){
+		return files;
+		}
+	}
 	public TcpConnection(Socket connection) throws IOException{
 		this.connection = connection;
 		input = new DataInputStream(connection.getInputStream());
 		output = new DataOutputStream(connection.getOutputStream());
-		this.run();
 	}
 	@Override
 	public void run() {
 		try{
+			
+			int length = input.readInt();
+			for(int i = 0; i<length; i++){
+				String name = input.readUTF();
+				int id = input.readInt();
+				int size = input.readInt();
+				files.add(new SharedFile(name,id,size));
+			}
+			
 			while(!Thread.currentThread().isInterrupted()){
 				if(input.available()>0){
 					int code = input.readInt();
-					switch(code){
-					case 1:{
-						
-					break; //file list
+					String msg = input.readUTF();
+					switch(code){ 
+					case 1:{ //new file
+					break; 
 					}
-					case 2: break;
+					case 2:{ //Server shutdown
+					Thread.currentThread().interrupt();
+					break;
+					}
 					case 3: break;
 					}
-					System.out.println("received: " + code);
+					System.out.println("received: " + code + " message: " + msg);
 				}
 				if(timeout>5000){
 					this.sendCode(3);
