@@ -3,9 +3,9 @@ package client;
 public class SharedFile {
 	private String name;
 	private int id;
-	private int size;
+	private long size;
 	
-	SharedFile(String name, int id, int size){
+	SharedFile(String name, int id, long size){
 		this.name = name;
 		this.id = id;
 		this.size = size;
@@ -23,10 +23,10 @@ public class SharedFile {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
-	public void setSize(int size) {
+	public void setSize(long size) {
 		this.size = size;
 	}
 
