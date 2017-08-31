@@ -92,5 +92,8 @@ public class TcpConnection implements Runnable{
 			e.printStackTrace();
 		}
 	}
-
+//langer Kommentar
+	
+	
+	
 }
