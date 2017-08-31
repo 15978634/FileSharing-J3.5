@@ -15,6 +15,7 @@ public class Server {
 	private ArrayList<ClientConnection> clients;
 	private static ArrayList<ServerFile> files;
 	private ServerSocket fileshare;
+	private static int currentId; 
 	private static File sourceDirectory = new File("//SLEEPLESS/homes$/lukaweis17/Documents/GitHub/FileSharing Project/FileSharing/FileSharing-J3.5/ServerFiles");
 	
 	public static void main(String[] args) {
@@ -32,14 +33,16 @@ public class Server {
 	
 	private void initializeFiles() throws IOException{
 		for (File f : sourceDirectory.listFiles()) {
-			
-			files.add(new ServerFile(f.getName(), f.toString(), files.indexOf(f), (int) f.length()));
+			files.add(new ServerFile(f.getName(), f.toString(), currentId, f.length()));
+			currentId++;
 		}
+		
 	}
 	
 	
 	
 	public Server() {
+		currentId = 0;
 		files = new ArrayList<ServerFile>();
 		clients = new ArrayList<ClientConnection>();
 		
@@ -97,5 +100,13 @@ public class Server {
 	
 	public static File getSourceDirectory() {
 		return sourceDirectory;
+	}
+	
+	public static int getCurrentId() {
+		return currentId;
+	}
+	
+	public static void setCurrentId(int currentId) {
+		Server.currentId = currentId;
 	}
 }

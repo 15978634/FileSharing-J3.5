@@ -4,8 +4,8 @@ public class ServerFile {
 	private String name;
 	private String location;
 	private int id;
-	private int size;
-	public ServerFile(String name, String location, int id, int size) {
+	private long size;
+	public ServerFile(String name, String location, int id, long size) {
 		this.name = name;
 		this.setLocation(location);
 		this.setId(id);
@@ -40,7 +40,7 @@ public class ServerFile {
 	}
 
 
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
 
