@@ -44,17 +44,15 @@ public class ClientConnection implements Runnable {
 					
 					if (inputStream.available() > 0) {
 						int code = inputStream.readInt();
-						int fileId;
 						Socket fileshareSocket;
 						switch(code) {						
-							case 1: fileId = inputStream.readInt();
+							case 1: int fileId = inputStream.readInt();
 									fileshareSocket = server.acceptFileshare();
 									server.pushToThreadPool(new ClientDownload(fileshareSocket, fileId));
 									break; //client will file runterladen
 							
-							case 2: fileId = inputStream.readInt();
-									fileshareSocket = server.acceptFileshare();
-									server.pushToThreadPool(new ClientUpload(fileshareSocket, fileId));
+							case 2:fileshareSocket = server.acceptFileshare();
+									server.pushToThreadPool(new ClientUpload(fileshareSocket, mQ));
 									break; //client will file hochladen
 									
 							case 3: break; //heartbeat
@@ -69,6 +67,8 @@ public class ClientConnection implements Runnable {
 						ServerMessage m = mQ.poll();
 						outputStream.writeInt(m.getCode());
 						outputStream.writeUTF(m.getMessage());
+						outputStream.writeInt(m.getId());
+						outputStream.writeLong(m.getSize());
 					}
 					
 				
