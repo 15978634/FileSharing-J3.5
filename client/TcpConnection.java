@@ -6,11 +6,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class TcpConnection implements Runnable{
-	private Socket fileTransfer;
+	private static Socket fileTransfer;
 	private Socket connection;
 	private DataInputStream input;
-	private DataOutputStream output;
-	private int timeout;
+	private static DataOutputStream output;
+	private static int timeout;
 	private static ArrayList<SharedFile> files;
 
 	
@@ -80,7 +80,7 @@ public class TcpConnection implements Runnable{
 		}
 	}
 
-	void sendMessage(String message){
+	static void sendMessage(String message){
 		try {
 			output.writeBytes(message);
 			System.out.println("sent: " + message);
@@ -89,7 +89,7 @@ public class TcpConnection implements Runnable{
 		}
 		
 	}
-	void sendCode (int code){
+	static void sendCode (int code){
 		try {
 			output.writeInt(code);
 			System.out.println("sent: " + code);
@@ -98,9 +98,9 @@ public class TcpConnection implements Runnable{
 		}
 		timeout = 0;
 	}
-	public synchronized void downloadFile(int id){
-		this.sendCode(1);
-		this.sendCode(id);
+	public static synchronized void downloadFile(int id){
+		sendCode(1);
+		sendCode(id);
 		SharedFile download = null;
 		for(SharedFile f : files){
 			if(f.getId() == id){
@@ -120,10 +120,10 @@ public class TcpConnection implements Runnable{
 
 		
 	}
-	public synchronized void uploadFile(String name, int size){
-		this.sendCode(2);
-		this.sendMessage(name);
-		this.sendCode(size);
+	public static synchronized void uploadFile(String name, int size){
+		sendCode(2);
+		sendMessage(name);
+		sendCode(size);
 		try {
 			fileTransfer = new Socket(Client.IP, 50003);
 		} catch (IOException e) {
