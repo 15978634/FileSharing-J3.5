@@ -6,13 +6,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class TcpConnection implements Runnable{
+	private Socket fileTransfer;
 	private Socket connection;
 	private DataInputStream input;
 	private DataOutputStream output;
 	private int timeout;
-	private ArrayList<SharedFile> files;
+	private static ArrayList<SharedFile> files;
+
 	
-	public ArrayList<SharedFile> getFiles() {
+	public static ArrayList<SharedFile> getFiles() {
 		synchronized(files){
 		return files;
 		}
@@ -21,6 +23,7 @@ public class TcpConnection implements Runnable{
 		this.connection = connection;
 		input = new DataInputStream(connection.getInputStream());
 		output = new DataOutputStream(connection.getOutputStream());
+		files = new ArrayList<SharedFile>();
 	}
 	@Override
 	public void run() {
@@ -92,8 +95,39 @@ public class TcpConnection implements Runnable{
 			e.printStackTrace();
 		}
 	}
-//langer Kommentar
-	
-	
-	
+	public synchronized void downloadFile(int id){
+		this.sendCode(1);
+		this.sendCode(id);
+		SharedFile download = null;
+		for(SharedFile f : files){
+			if(f.getId() == id){
+				download = new SharedFile(f.getName(), f.getId(), f.getSize());
+			}
+		}
+		try {
+			fileTransfer = new Socket(Client.IP, 50003);
+		} catch (IOException e) {
+		}
+		if(files != null){
+			new Thread(new Download(fileTransfer, download));
+		}else{
+			System.out.println("This file does not exist!");
+		}
+
+		
+	}
+	public synchronized void uploadFile(String name, int size){
+		this.sendCode(2);
+		this.sendMessage(name);
+		this.sendCode(size);
+		try {
+			fileTransfer = new Socket(Client.IP, 50003);
+		} catch (IOException e) {
+		}
+		new Thread(new Upload(fileTransfer));
+		
+	}
+	public static void interrupt(){
+		Thread.currentThread().interrupt();
+	}
 }
