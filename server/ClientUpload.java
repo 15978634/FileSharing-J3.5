@@ -26,9 +26,9 @@ public class ClientUpload implements Runnable {
 	@Override
 	public void run() {
 		try {
-			int length = inputStream.readInt();
+			long length = inputStream.readLong();
 			String name = inputStream.readUTF();
-			byte[] content = new byte[length];
+			byte[] content = new byte[(int) length];
 			inputStream.read(content);
 			newFile = new File(Server.getSourceDirectory() + "" + name);
 			newFile.createNewFile();
@@ -36,8 +36,8 @@ public class ClientUpload implements Runnable {
 			fOutputStream.write(content);
 			fOutputStream.close();
 			inputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Server.getFiles().add(new ServerFile(name, newFile.toString(), Server.getCurrentId(), newFile.length()));
+		}	catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

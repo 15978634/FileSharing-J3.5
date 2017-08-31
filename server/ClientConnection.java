@@ -36,7 +36,7 @@ public class ClientConnection implements Runnable {
 			for (ServerFile file : Server.getFiles()) {
 				outputStream.writeUTF(file.getName());
 				outputStream.writeInt(file.getId());
-				outputStream.writeInt(file.getSize());
+				outputStream.writeLong(file.getSize());
 			}
 			while(!Thread.currentThread().isInterrupted()) {
 				if (timeoutCounter < 1000) {
@@ -57,8 +57,7 @@ public class ClientConnection implements Runnable {
 									server.pushToThreadPool(new ClientUpload(fileshareSocket, fileId));
 									break; //client will file hochladen
 									
-							case 3: System.out.println("heartbeat");
-									break; //heartbeat
+							case 3: break; //heartbeat
 						}
 						timeoutCounter = 0;
 					} else {
