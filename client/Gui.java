@@ -1,6 +1,7 @@
 package client;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -74,7 +75,8 @@ public class Gui extends JFrame{
 		upload.setBorder(emptyBorder);;
 		upload.addActionListener((ActionEvent e) -> {
 			GUIFileChooser file = new GUIFileChooser();
-        });
+			File file2 = file.GetSelectedFile();
+		});
 		
 		frame.add(disconnect);
 		frame.add(download);

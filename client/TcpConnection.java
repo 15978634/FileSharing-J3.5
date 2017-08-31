@@ -25,9 +25,9 @@ public class TcpConnection implements Runnable{
 	@Override
 	public void run() {
 		try{
-			System.out.printIn("test");
+			System.out.println("test");
 			int length = input.readInt();
-			System.out.printIn(length); 
+			System.out.println(length); 
 			for(int i = 0; i<length; i++){
 				String name = input.readUTF();
 				int id = input.readInt();
