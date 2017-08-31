@@ -58,7 +58,7 @@ public class TcpConnection implements Runnable{
 					System.out.println("received: " + code + " message: " + msg);
 				}
 				if(timeout>500){
-					this.sendCode(3);
+					sendCode(3);
 					timeout = 0;
 				}
 				if(!Thread.currentThread().isInterrupted()){
@@ -112,7 +112,7 @@ public class TcpConnection implements Runnable{
 		} catch (IOException e) {
 		}
 		if(files != null){
-			new Thread(new Download(fileTransfer, download));
+			new Thread(new Download(fileTransfer, download)).start();
 			System.out.println("Download started!");
 		}else{
 			System.out.println("This file does not exist!");
