@@ -6,6 +6,7 @@ import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
@@ -24,6 +25,17 @@ public class Gui extends JFrame{
 		Border emptyBorder = BorderFactory.createEmptyBorder();
 		frame = new JFrame();
 		frame.setLayout(null);
+		
+		JLabel ip = new JLabel("IP:");
+		ip.setForeground(Color.WHITE);
+		ip.setBounds(120, 70, 120, 25);
+		ip.setBorder(emptyBorder);
+		
+		JLabel port = new JLabel("PORT:");
+		port.setForeground(Color.WHITE);
+		port.setBounds(100, 100, 120, 25);
+		port.setBorder(emptyBorder);
+		
 		
 		JTextField pfield = new JTextField();
 		pfield.setBackground(Color.WHITE);
@@ -59,6 +71,9 @@ public class Gui extends JFrame{
 		disconnect.setBackground(Color.WHITE);
 		disconnect.setForeground(Color.decode("#2196F3"));
 		disconnect.setBorder(emptyBorder);
+		btn.addActionListener((ActionEvent e) -> {
+			TcpConnection.interrupt();
+        });
 		
 		JButton download = new JButton("Download");
 		download.setBounds(350, 150, 100, 40);
@@ -78,6 +93,9 @@ public class Gui extends JFrame{
 			File file2 = file.GetSelectedFile();
 		});
 		
+		
+		frame.add(ip);
+		frame.add(port);
 		frame.add(disconnect);
 		frame.add(download);
 		frame.add(upload);
