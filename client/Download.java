@@ -24,7 +24,6 @@ public class Download implements Runnable {
 			e.printStackTrace();
 		}
 		savedFile = new File("//SLEEPLESS/homes$/jannvita17/Documents/FileSharing/" +file.getName());
-		
 		content = new byte[(int) this.file.getSize()];
 
 	}
@@ -32,19 +31,23 @@ public class Download implements Runnable {
 	public void run() {
 		try {
 			input.readFully(content);
+			System.out.println("1");
 		} catch (IOException e) {
 		}
 		try {
 			savedFile.createNewFile();
+			System.out.println("2");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
 			Writer = new FileOutputStream(savedFile);
+			System.out.println("3");
 		} catch (FileNotFoundException e) {
 		}
 		try {
 			Writer.write(content);
+			System.out.println("4");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

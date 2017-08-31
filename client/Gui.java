@@ -1,7 +1,10 @@
 package client;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -14,6 +17,9 @@ import javax.swing.border.Border;
 
 public class Gui extends JFrame{
 	
+	Vector data;
+	Vector File;
+	
 	public JFrame frame;
 
 	public Gui()
@@ -21,38 +27,49 @@ public class Gui extends JFrame{
 		initUI();
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initUI()
 	{	
 		Border emptyBorder = BorderFactory.createEmptyBorder();
 		frame = new JFrame();
 		frame.setLayout(null);
 		
+		 data = new Vector();
+			File = new Vector();
+				File.add("test");
+				File.add(5);
+				File.add(3434);
+				
+			data.add(File);
 		
-		String[] title = new String[]{
-				"FileName", "File-ID", "File-Size"
-		};
+		Vector title = new Vector();
+			title.add("FILENAME");
+			title.add("FILEID");
+			title.add("FILESIZE");
 		
-		JTable filelist = new JTable();
-		
+		JTable filelist = new JTable(data, title);
+		filelist.setBounds(210, 20, 550, 475);
+		filelist.setForeground(Color.decode("#2196F3"));
+
 		JLabel ip = new JLabel("IP:");
 		ip.setForeground(Color.WHITE);
-		ip.setBounds(120, 70, 120, 25);
+		ip.setBounds(20, 70, 120, 25);
 		ip.setBorder(emptyBorder);
 		
 		JLabel port = new JLabel("PORT:");
 		port.setForeground(Color.WHITE);
-		port.setBounds(100, 100, 120, 25);
+		port.setBounds(0, 100, 120, 25);
 		port.setBorder(emptyBorder);
 		
 		JLabel id = new JLabel("ID:");
 		id.setForeground(Color.WHITE);
-		id.setBounds(330, 170, 120, 25);
+		id.setBounds(210, 510, 120, 25);
 		id.setBorder(emptyBorder);
 		
 		JTextField FileID = new JTextField();
 		FileID.setBackground(Color.WHITE);
 		FileID.setForeground(Color.decode("#2196F3"));
-		FileID.setBounds(350, 170, 100, 25);
+		FileID.setBounds(230, 510, 100, 25);
 		FileID.setBorder(emptyBorder);
 		FileID.setHorizontalAlignment(JTextField.CENTER);
 		FileID.addActionListener((ActionEvent e) -> {
@@ -61,7 +78,7 @@ public class Gui extends JFrame{
 		
 		JTextField portfield = new JTextField();
 		portfield.setBackground(Color.WHITE);
-		portfield.setBounds(140, 100, 120, 25);
+		portfield.setBounds(40, 100, 120, 25);
 		portfield.setText("50002");
 		portfield.setForeground(Color.decode("#2196F3"));
 		portfield.setBorder(emptyBorder);
@@ -71,7 +88,7 @@ public class Gui extends JFrame{
 		
 		JTextField ipfield = new JTextField();
 		ipfield.setBackground(Color.WHITE);
-		ipfield.setBounds(140, 70, 120, 25);
+		ipfield.setBounds(40, 70, 120, 25);
 		ipfield.setForeground(Color.decode("#2196F3"));
 		ipfield.setBorder(emptyBorder);
 		ipfield.setHorizontalAlignment(JTextField.CENTER);
@@ -81,7 +98,7 @@ public class Gui extends JFrame{
         });
 		
 		JButton btn = new JButton("Connect");
-		btn.setBounds(150, 150, 100, 40);
+		btn.setBounds(50, 150, 100, 40);
 		btn.setBackground(Color.WHITE);
 		btn.setForeground(Color.decode("#2196F3"));
 		btn.setBorder(emptyBorder);
@@ -91,7 +108,7 @@ public class Gui extends JFrame{
         });
 		
 		JButton disconnect = new JButton("Disconnect");
-		disconnect.setBounds(150, 200, 100, 40);
+		disconnect.setBounds(50, 400, 100, 40);
 		disconnect.setBackground(Color.WHITE);
 		disconnect.setForeground(Color.decode("#2196F3"));
 		disconnect.setBorder(emptyBorder);
@@ -101,17 +118,16 @@ public class Gui extends JFrame{
         });
 		
 		JButton download = new JButton("Download");
-		download.setBounds(350, 200, 100, 40);
+		download.setBounds(350, 500, 100, 40);
 		download.setBackground(Color.WHITE);
 		download.setForeground(Color.decode("#2196F3"));
 		download.setBorder(emptyBorder);
 		download.addActionListener((ActionEvent e) -> {
-			TcpConnection.downloadFile(Integer.parseInt(id.getText()));
-			System.out.println(id.getText());
+			TcpConnection.downloadFile(Integer.parseInt(FileID.getText()));
         });
 		
 		JButton upload = new JButton("Upload");
-		upload.setBounds(550, 200, 100, 40);
+		upload.setBounds(550, 500, 100, 40);
 		upload.setBackground(Color.WHITE);
 		upload.setForeground(Color.decode("#2196F3"));
 		upload.setBorder(emptyBorder);;
@@ -137,5 +153,31 @@ public class Gui extends JFrame{
 		frame.setSize(800, 600);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void ShowFiles(ArrayList<SharedFile> files)
+	{
+		
+		for(int i = 0; i < files.size(); i++){
+			SharedFile tempfile = null;
+			
+			int x = 0;
+			for (SharedFile file : files) {
+			    if (x == i) {
+			        tempfile = file;
+			        x = 0;
+			        break;
+			    }
+			    x++;
+			}
+			
+			Vector tempFile = new Vector();
+			tempFile.add(tempfile.getName());
+			tempFile.add(tempfile.getId());
+			tempFile.add(tempfile.getSize());
+			
+			data.add(tempFile);
+		}
 	}
 }
