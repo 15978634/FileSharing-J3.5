@@ -23,7 +23,6 @@ public class Client {
 			socket = new Socket(ip , port);
 			connectionInit(socket);	
 			System.out.println("Socket connected!");
-			ShowFile();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,7 +36,7 @@ public class Client {
 		new Thread(new TcpConnection(s)).start();
 	}
 	
-	private static void ShowFile()
+	public static void ShowFile()
 	{
 		GUIFileList filelist = new GUIFileList(TcpConnection.getFiles());
 		filelist.FileList.setVisible(true);

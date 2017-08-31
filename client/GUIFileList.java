@@ -30,17 +30,14 @@ public class GUIFileList {
 			
 			JLabel tempname = new JLabel();
 			tempname.setBounds(0, i * 25, 200, 25);
-			System.out.println(tempname.getBounds());
 			tempname.setText(tempfile.getName());
 			
 			JLabel tempid= new JLabel();
 			tempid.setBounds(100, i * 25, 200, 25);
-			System.out.println(tempid.getBounds());
 			tempid.setText("" + tempfile.getId());
 			
 			JLabel tempsize = new JLabel();
 			tempsize.setBounds(150, i * 25, 200, 25);
-			System.out.println(tempsize.getBounds());
 			tempsize.setText("" + tempfile.getSize());
 			
 			FileList.add(tempname);
