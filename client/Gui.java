@@ -17,7 +17,7 @@ import javax.swing.border.Border;
 
 public class Gui extends JFrame{
 	
-	Vector data;
+	static Vector data;
 	Vector File;
 	
 	public JFrame frame;
@@ -156,7 +156,7 @@ public class Gui extends JFrame{
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void ShowFiles(ArrayList<SharedFile> files)
+	public static void ShowFiles(ArrayList<SharedFile> files)
 	{
 		
 		for(int i = 0; i < files.size(); i++){

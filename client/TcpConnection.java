@@ -40,7 +40,6 @@ public class TcpConnection implements Runnable{
 				    
 			}
 			Gui.ShowFiles(files);
-			Client.ShowFile();
 			
 			while(!Thread.currentThread().isInterrupted()){
 				if(input.available()>0){
