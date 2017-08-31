@@ -35,6 +35,7 @@ public class ClientUpload implements Runnable {
 			FileOutputStream fOutputStream = new FileOutputStream(newFile);
 			fOutputStream.write(content);
 			fOutputStream.close();
+			inputStream.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
