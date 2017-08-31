@@ -38,6 +38,7 @@ public class TcpConnection implements Runnable{
 				files.add(new SharedFile(name,id,size));
 				    
 			}
+			Client.ShowFile();
 			
 			while(!Thread.currentThread().isInterrupted()){
 				if(input.available()>0){
