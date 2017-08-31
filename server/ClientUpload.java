@@ -2,6 +2,7 @@ package server;
 
 import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -18,7 +19,6 @@ public class ClientUpload implements Runnable {
 		try {
 			inputStream = new DataInputStream(fileshareSocket.getInputStream());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -32,7 +32,9 @@ public class ClientUpload implements Runnable {
 			inputStream.read(content);
 			newFile = new File(Server.getSourceDirectory() + "" + name);
 			newFile.createNewFile();
-			
+			FileOutputStream fOutputStream = new FileOutputStream(newFile);
+			fOutputStream.write(content);
+			fOutputStream.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
