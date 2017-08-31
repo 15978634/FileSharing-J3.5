@@ -54,6 +54,8 @@ public class Gui extends JFrame{
 		field.setBorder(emptyBorder);
 		field.setHorizontalAlignment(JTextField.CENTER);
 		field.addActionListener((ActionEvent e) -> {
+			field.getText();
+            Client.connectSocket(field.getText(), Integer.parseInt(pfield.getText()));
         });
 		
 		JButton btn = new JButton("Connect");
