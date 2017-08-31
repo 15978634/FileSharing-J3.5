@@ -11,9 +11,10 @@ public class TcpConnection implements Runnable{
 	private DataInputStream input;
 	private DataOutputStream output;
 	private int timeout;
-	private ArrayList<SharedFile> files;
+	private static ArrayList<SharedFile> files;
+
 	
-	public ArrayList<SharedFile> getFiles() {
+	public static ArrayList<SharedFile> getFiles() {
 		synchronized(files){
 		return files;
 		}
