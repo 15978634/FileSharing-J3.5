@@ -15,7 +15,7 @@ public class Server {
 	private ArrayList<ClientConnection> clients;
 	private static ArrayList<ServerFile> files;
 	private ServerSocket fileshare;
-	private File sourceDirectory = new File("//SLEEPLESS/homes$/lukaweis17/Documents/GitHub/FileSharing Project/FileSharing/FileSharing-J3.5/ServerFiles");
+	private static File sourceDirectory = new File("//SLEEPLESS/homes$/lukaweis17/Documents/GitHub/FileSharing Project/FileSharing/FileSharing-J3.5/ServerFiles");
 	
 	public static void main(String[] args) {
 		new Server();
@@ -93,5 +93,9 @@ public class Server {
 	
 	public void pushToThreadPool(Runnable r) {
 		executor.execute(r);
+	}
+	
+	public static File getSourceDirectory() {
+		return sourceDirectory;
 	}
 }
