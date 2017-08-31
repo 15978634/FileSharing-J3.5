@@ -15,18 +15,18 @@ public class Client {
 			Gui gui = new Gui();
 			gui.frame.setVisible(true);
 			
-			/**ArrayList<SharedFile> array = new ArrayList<SharedFile>();
+			ArrayList<SharedFile> array = new ArrayList<SharedFile>();
 			SharedFile file = new SharedFile("test.txt", 3, 3);
 			SharedFile file2 = new SharedFile("test2.txt", 33, 33);
 			SharedFile file3 = new SharedFile("test3.txt", 44, 44);
 			array.add(file);
 			array.add(file2);
 			array.add(file3);
-			**/
+			
 			
 			//Get FileList
-			//GUIFileList filelist = new GUIFileList(array);
-			//filelist.FileList.setVisible(true);
+			GUIFileList filelist = new GUIFileList(array);
+			filelist.FileList.setVisible(true);
 			
 		});
 	}
