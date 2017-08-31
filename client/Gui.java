@@ -19,6 +19,7 @@ public class Gui extends JFrame{
 	
 	static Vector data;
 	Vector File;
+	public static JTable filelist;
 	
 	public JFrame frame;
 
@@ -36,9 +37,9 @@ public class Gui extends JFrame{
 		
 		 data = new Vector();
 			File = new Vector();
-				File.add("test");
-				File.add(5);
-				File.add(3434);
+				File.add("FILE_NAME");
+				File.add("FILE_ID");
+				File.add("FILE_SIZE");
 				
 			data.add(File);
 		
@@ -46,20 +47,6 @@ public class Gui extends JFrame{
 			title.add("FILENAME");
 			title.add("FILEID");
 			title.add("FILESIZE");
-		
-		JTable filelist = new JTable(data, title);
-		filelist.setBounds(210, 20, 550, 475);
-		filelist.setForeground(Color.decode("#2196F3"));
-
-		JLabel ip = new JLabel("IP:");
-		ip.setForeground(Color.WHITE);
-		ip.setBounds(20, 70, 120, 25);
-		ip.setBorder(emptyBorder);
-		
-		JLabel port = new JLabel("PORT:");
-		port.setForeground(Color.WHITE);
-		port.setBounds(0, 100, 120, 25);
-		port.setBorder(emptyBorder);
 		
 		JLabel id = new JLabel("ID:");
 		id.setForeground(Color.WHITE);
@@ -75,6 +62,31 @@ public class Gui extends JFrame{
 		FileID.addActionListener((ActionEvent e) -> {
 			
         });
+			
+		filelist = new JTable(data, title);
+		filelist.setBounds(210, 20, 550, 475);
+		filelist.setForeground(Color.decode("#2196F3"));
+		filelist.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			 public void mouseClicked(java.awt.event.MouseEvent evt) {
+			    int row = filelist.rowAtPoint(evt.getPoint());
+			    int col = filelist.columnAtPoint(evt.getPoint());
+			    	filelist.getValueAt(row, 1);
+			    	FileID.setText("" +filelist.getValueAt(row, 1));
+			    //System.out.println(col + " " + row);
+			 }
+		});
+
+		JLabel ip = new JLabel("IP:");
+		ip.setForeground(Color.WHITE);
+		ip.setBounds(20, 70, 120, 25);
+		ip.setBorder(emptyBorder);
+		
+		JLabel port = new JLabel("PORT:");
+		port.setForeground(Color.WHITE);
+		port.setBounds(0, 100, 120, 25);
+		port.setBorder(emptyBorder);
+		
 		
 		JTextField portfield = new JTextField();
 		portfield.setBackground(Color.WHITE);
@@ -178,6 +190,7 @@ public class Gui extends JFrame{
 			tempFile.add(tempfile.getSize());
 			
 			data.add(tempFile);
+			filelist.repaint();
 		}
 	}
 }
