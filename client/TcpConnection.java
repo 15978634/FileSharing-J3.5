@@ -39,7 +39,7 @@ public class TcpConnection implements Runnable{
 				System.out.println(name + id + size);
 				    
 			}
-			Client.ShowFile();
+			Gui.ShowFiles();
 			
 			while(!Thread.currentThread().isInterrupted()){
 				if(input.available()>0){
