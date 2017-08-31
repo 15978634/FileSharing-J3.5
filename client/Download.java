@@ -51,7 +51,12 @@ public class Download implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		try {
+			fileTransfer.close();
+			Writer.close();
+			input.close();
+		} catch (IOException e) {
+		}
 		
 	}
 
