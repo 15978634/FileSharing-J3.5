@@ -33,24 +33,28 @@ public class ClientConnection implements Runnable {
 		try {
 			
 			outputStream.writeInt(Server.getFiles().size());
-			
 			for (ServerFile file : Server.getFiles()) {
 				outputStream.writeUTF(file.getName());
+				outputStream.writeInt(file.getId());
+				outputStream.writeInt(file.getSize());
 			}
-			
 			while(!Thread.currentThread().isInterrupted()) {
 				if (timeoutCounter < 1000) {
 					
 					
 					if (inputStream.available() > 0) {
 						int code = inputStream.readInt();
-						switch(code) {
-							case 1: int fileId = inputStream.readInt();
-									Socket fileshareSocket = server.acceptFileshare();
+						int fileId;
+						Socket fileshareSocket;
+						switch(code) {						
+							case 1: fileId = inputStream.readInt();
+									fileshareSocket = server.acceptFileshare();
 									server.pushToThreadPool(new ClientDownload(fileshareSocket, fileId));
 									break; //client will file runterladen
 							
-							case 2: fileDownload();
+							case 2: fileId = inputStream.readInt();
+									fileshareSocket = server.acceptFileshare();
+									server.pushToThreadPool(new ClientUpload(fileshareSocket, fileId));
 									break; //client will file hochladen
 									
 							case 3: System.out.println("heartbeat");

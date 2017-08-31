@@ -32,12 +32,7 @@ public class Server {
 	
 	private void initializeFiles() throws IOException{
 		for (File f : sourceDirectory.listFiles()) {
-			/*String fileName = f.toString();
-			FileInputStream fInputStream = new FileInputStream(f);
-			fInputStream.
-			/*int length = fInputStream.available();
-			byte[] content = new byte[length];
-				fInputStream.read(content);*/
+			
 			files.add(new ServerFile(f.getName(), f.toString(), files.indexOf(f), (int) f.length()));
 		}
 	}
