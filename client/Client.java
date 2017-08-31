@@ -36,7 +36,7 @@ public class Client {
 		new Thread(new TcpConnection(s)).start();
 	}
 	
-	public static void ShowFile()
+	public static synchronized void ShowFile()
 	{
 		GUIFileList filelist = new GUIFileList(TcpConnection.getFiles());
 		filelist.FileList.setVisible(true);

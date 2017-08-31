@@ -31,11 +31,12 @@ public class TcpConnection implements Runnable{
 			System.out.println("test");
 			int length = input.readInt();
 			System.out.println(length); 
-			for(int i = 0; i<length; i++){
+			for(int i = 0; i < length; i++){
 				String name = input.readUTF();
 				int id = input.readInt();
-				int size = input.readInt();
+				long size = input.readLong();
 				files.add(new SharedFile(name,id,size));
+				System.out.println(name + id + size);
 				    
 			}
 			Client.ShowFile();
@@ -64,7 +65,6 @@ public class TcpConnection implements Runnable{
 					Thread.sleep(10);
 					timeout++;
 				}
-				
 			}
 		}
 		catch(Exception e){
@@ -131,7 +131,7 @@ public class TcpConnection implements Runnable{
 		new Thread(new Upload(fileTransfer));
 		
 	}
-	public static void interrupt(){
+	public static synchronized void interrupt(){
 		Thread.currentThread().interrupt();
 	}
 }
