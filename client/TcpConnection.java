@@ -1,6 +1,7 @@
 package client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -40,7 +41,6 @@ public class TcpConnection implements Runnable{
 				    
 			}
 			Gui.ShowFiles(files);
-			Client.ShowFile();
 			
 			while(!Thread.currentThread().isInterrupted()){
 				if(input.available()>0){
@@ -99,6 +99,16 @@ public class TcpConnection implements Runnable{
 		}
 		timeout = 0;
 	}
+
+	static void sendCode (long code){
+		try {
+			output.writeLong(code);
+			System.out.println("sent: " + code);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		timeout = 0;
+	}
 	public static synchronized void downloadFile(int id){
 		sendCode(1);
 		sendCode(id);
@@ -121,15 +131,15 @@ public class TcpConnection implements Runnable{
 
 		
 	}
-	public static synchronized void uploadFile(String name, int size){
+	public static synchronized void uploadFile(String name, File file){
 		sendCode(2);
 		sendMessage(name);
-		sendCode(size);
+		sendCode(file.getTotalSpace());
 		try {
 			fileTransfer = new Socket(Client.IP, 50003);
 		} catch (IOException e) {
 		}
-		new Thread(new Upload(fileTransfer));
+		new Thread(new Upload(fileTransfer, file));
 		
 	}
 	public static synchronized void interrupt(){
