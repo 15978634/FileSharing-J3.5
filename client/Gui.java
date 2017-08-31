@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-@SuppressWarnings("serial")
+
 public class Gui extends JFrame{
 	
 	public JFrame frame;

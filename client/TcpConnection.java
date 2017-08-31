@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class TcpConnection implements Runnable{
 	private Socket connection;
+	private Socket fileTransfer;
 	private DataInputStream input;
 	private DataOutputStream output;
 	private int timeout;
@@ -21,19 +22,20 @@ public class TcpConnection implements Runnable{
 		this.connection = connection;
 		input = new DataInputStream(connection.getInputStream());
 		output = new DataOutputStream(connection.getOutputStream());
+		files = new ArrayList<SharedFile>();
 	}
 	@Override
 	public void run() {
 		try{
-			System.out.printIn("test");
+			
 			int length = input.readInt();
-			System.out.printIn(length); 
-			for(int i = 0; i<length; i++){
+			System.out.println("received number of messages: " + length); 
+			for(int i = 0; i < length; i++){
 				String name = input.readUTF();
 				int id = input.readInt();
 				int size = input.readInt();
 				files.add(new SharedFile(name,id,size));
-				    
+				System.out.println("received filename: " + name);
 			}
 			
 			while(!Thread.currentThread().isInterrupted()){
@@ -91,6 +93,27 @@ public class TcpConnection implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	public synchronized void downloadFile(int id){
+		this.sendCode(1);
+		this.sendCode(id);
+		try {
+			fileTransfer = new Socket(Client.IP, 50003);
+		} catch (IOException e) {
+		}
+		new Thread(new Download(fileTransfer));
+		
+	}
+	public synchronized void uploadFile(String name, int size){
+		this.sendCode(2);
+		this.sendMessage(name);
+		this.sendCode(size);
+		try {
+			fileTransfer = new Socket(Client.IP, 50003);
+		} catch (IOException e) {
+		}
+		new Thread(new Upload(fileTransfer));
+		
 	}
 
 }

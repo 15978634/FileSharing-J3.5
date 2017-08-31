@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client {
-	
+	public static String IP;
 	public static Socket socket;
 	TcpConnection clientConnection;
 	public static void main(String[] args){
@@ -18,6 +18,7 @@ public class Client {
 	}
 	public static void connectSocket(String ip, int port){
 		try {
+			IP = ip;
 			socket = new Socket(ip , port);
 			connectionInit(socket);	
 			System.out.println("Socket connected!");
@@ -31,6 +32,6 @@ public class Client {
 	}
 	private static void connectionInit(Socket s) throws IOException{
 		
-		new Thread(new TcpConnection(s)).start();;
+		new Thread(new TcpConnection(s)).start();
 	}
 }
