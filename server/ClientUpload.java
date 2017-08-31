@@ -5,22 +5,22 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class ClientUpload implements Runnable {
 
 	private Socket fileshareSocket;
-	private int fileId;
 	private DataInputStream inputStream;
 	File newFile;
-	public ClientUpload(Socket fileshareSocket, int fileId) {
-		
-		this.fileshareSocket = fileshareSocket;
-		this.fileId = fileId;
+	ArrayBlockingQueue<ServerMessage> mQ;
+	public ClientUpload(Socket fileshareSocket, ArrayBlockingQueue<ServerMessage> mQ) {
 		try {
-			inputStream = new DataInputStream(fileshareSocket.getInputStream());
+			this.fileshareSocket = fileshareSocket;
+		inputStream = new DataInputStream(fileshareSocket.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		this.mQ = mQ;
 	}
 	
 	@Override
@@ -30,13 +30,22 @@ public class ClientUpload implements Runnable {
 			String name = inputStream.readUTF();
 			byte[] content = new byte[(int) length];
 			inputStream.read(content);
-			newFile = new File(Server.getSourceDirectory() + "" + name);
+			newFile = new File(Server.getSourceDirectory() + "/" + name);
 			newFile.createNewFile();
 			FileOutputStream fOutputStream = new FileOutputStream(newFile);
 			fOutputStream.write(content);
 			fOutputStream.close();
 			inputStream.close();
-			Server.getFiles().add(new ServerFile(name, newFile.toString(), Server.getCurrentId(), newFile.length()));
+			int id = Server.getCurrentId();
+			Server.getFiles().add(new ServerFile(name, newFile.toString(), id, newFile.length()));
+			Server.setCurrentId(Server.getCurrentId() + 1);
+			try {
+				mQ.put(new ServerMessage(1, name, id, newFile.length()));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}	catch (IOException e) {
 			e.printStackTrace();
 		}
