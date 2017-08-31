@@ -1,6 +1,5 @@
 package server;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,6 +14,7 @@ public class Server {
 	private ExecutorService executor;
 	private ArrayList<ClientConnection> clients;
 	private static ArrayList<ServerFile> files;
+	private ServerSocket fileshare;
 	private File sourceDirectory = new File("//SLEEPLESS/homes$/lukaweis17/Documents/GitHub/FileSharing Project/FileSharing/FileSharing-J3.5/ServerFiles");
 	
 	public static void main(String[] args) {
@@ -47,6 +47,7 @@ public class Server {
 	public Server() {
 		files = new ArrayList<ServerFile>();
 		clients = new ArrayList<ClientConnection>();
+		
 		try {
 			initializeFiles();
 		} catch (IOException e1) {
@@ -57,6 +58,7 @@ public class Server {
 		
 		try {
 			listener = new ServerSocket(DEFAULT_PORT);
+			fileshare = new ServerSocket(DEFAULT_PORT + 1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -65,7 +67,8 @@ public class Server {
 			while(true) {
 				Socket clientSocket = listener.accept();
 				if (clientSocket != null) {
-					ClientConnection connection = new ClientConnection(clientSocket);
+					ClientConnection connection = new ClientConnection(clientSocket, this);
+					System.out.println(clientSocket.getInetAddress() + " connected");
 					synchronized (clients) {
 						clients.add(connection);
 					}
@@ -79,11 +82,21 @@ public class Server {
 		}
 	}
 	
+	public Socket acceptFileshare() throws IOException {
+		synchronized(fileshare) {
+			return fileshare.accept();
+		}
+	}
+	
 	public static ArrayList<ServerFile> getFiles() {
 		return files;
 	}
 
 	public static void setFiles(ArrayList<ServerFile> files) {
 		Server.files = files;
+	}
+	
+	public void pushToThreadPool(Runnable r) {
+		executor.execute(r);
 	}
 }

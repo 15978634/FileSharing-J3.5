@@ -4,10 +4,11 @@ import java.net.Socket;
 
 public class ClientUpload implements Runnable {
 
-	private Socket uploadSocket;
-	
-	public ClientUpload(Socket uploadSocket) {
-		this.uploadSocket = uploadSocket;
+	private Socket fileshareSocket;
+	private int fileId;
+	public ClientUpload(Socket fileshareSocket, int fileId) {
+		this.fileshareSocket = fileshareSocket;
+		this.fileId = fileId;
 	}
 	
 	@Override

@@ -13,13 +13,14 @@ public class ClientConnection implements Runnable {
 	private DataInputStream inputStream;
 	private DataOutputStream outputStream;
 	private int timeoutCounter;
-	
-	public ClientConnection (Socket clientSocket) throws IOException{
+	private Server server;
+	public ClientConnection (Socket clientSocket, Server server) throws IOException{
 		mQ = new ArrayBlockingQueue<ServerMessage>(5);
 		inputStream = new DataInputStream(clientSocket.getInputStream());
 		outputStream = new DataOutputStream(clientSocket.getOutputStream());
 		timeoutCounter = 0;
 		this.clientSocket = clientSocket;
+		this.server = server;
 	}
 	
 	
@@ -44,7 +45,9 @@ public class ClientConnection implements Runnable {
 					if (inputStream.available() > 0) {
 						int code = inputStream.readInt();
 						switch(code) {
-							case 1: fileUpload();
+							case 1: int fileId = inputStream.readInt();
+									Socket fileshareSocket = server.acceptFileshare();
+									server.pushToThreadPool(new ClientDownload(fileshareSocket, fileId));
 									break; //client will file runterladen
 							
 							case 2: fileDownload();
@@ -86,8 +89,7 @@ public class ClientConnection implements Runnable {
 	}
 	
 	public void fileUpload() {
-		/*while(true){
-		}*/
+		
 	}
 	
 	public void fileDownload() {
