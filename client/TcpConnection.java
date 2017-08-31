@@ -23,6 +23,7 @@ public class TcpConnection implements Runnable{
 		this.connection = connection;
 		input = new DataInputStream(connection.getInputStream());
 		output = new DataOutputStream(connection.getOutputStream());
+		files = new ArrayList<SharedFile>();
 	}
 	@Override
 	public void run() {
@@ -97,11 +98,22 @@ public class TcpConnection implements Runnable{
 	public synchronized void downloadFile(int id){
 		this.sendCode(1);
 		this.sendCode(id);
+		SharedFile download = null;
+		for(SharedFile f : files){
+			if(f.getId() == id){
+				download = new SharedFile(f.getName(), f.getId(), f.getSize());
+			}
+		}
 		try {
 			fileTransfer = new Socket(Client.IP, 50003);
 		} catch (IOException e) {
 		}
-		new Thread(new Download(fileTransfer));
+		if(files != null){
+			new Thread(new Download(fileTransfer, download));
+		}else{
+			System.out.println("This file does not exist!");
+		}
+
 		
 	}
 	public synchronized void uploadFile(String name, int size){
@@ -114,5 +126,8 @@ public class TcpConnection implements Runnable{
 		}
 		new Thread(new Upload(fileTransfer));
 		
+	}
+	public static void interrupt(){
+		Thread.currentThread().interrupt();
 	}
 }
