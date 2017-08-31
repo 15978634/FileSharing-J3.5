@@ -15,10 +15,6 @@ public class ClientDownload implements Runnable {
 	public ClientDownload(Socket fileshareSocket, int fileId) {
 		this.fileshareSocket = fileshareSocket;
 		this.fileId = fileId;
-		System.out.println(fileId);
-		if (fileshareSocket != null) {
-			System.out.println(fileshareSocket.toString());
-		}
 		try {
 			outputStream = new DataOutputStream(fileshareSocket.getOutputStream());
 		} catch (IOException e) {
