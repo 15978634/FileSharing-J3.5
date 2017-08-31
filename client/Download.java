@@ -2,12 +2,15 @@ package client;
 
 import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 public class Download implements Runnable {
 	Socket fileTransfer;
-	private DataInputStream input;
+	FileOutputStream Writer;
+	DataInputStream input;
 	File savedFile;
 	SharedFile file;
 	byte[] content;
@@ -18,16 +21,34 @@ public class Download implements Runnable {
 		try {
 			input = new DataInputStream(fileTransfer.getInputStream());
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
-		content = new byte[this.file.getSize()];
+		savedFile = new File("//SLEEPLESS/homes$/jannvita17/Documents/FileSharing/" +file.getName());
+		
+		content = new byte[(int) this.file.getSize()];
+
 	}
 	@Override
 	public void run() {
 		try {
-			input.read(content);
+			input.readFully(content);
 		} catch (IOException e) {
 		}
+		try {
+			savedFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			Writer = new FileOutputStream(savedFile);
+		} catch (FileNotFoundException e) {
+		}
+		try {
+			Writer.write(content);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 

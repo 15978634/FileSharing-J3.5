@@ -6,11 +6,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class TcpConnection implements Runnable{
-	private Socket fileTransfer;
+	private static Socket fileTransfer;
 	private Socket connection;
 	private DataInputStream input;
-	private DataOutputStream output;
-	private int timeout;
+	private static DataOutputStream output;
+	private static int timeout;
 	private static ArrayList<SharedFile> files;
 
 	
@@ -31,11 +31,12 @@ public class TcpConnection implements Runnable{
 			System.out.println("test");
 			int length = input.readInt();
 			System.out.println(length); 
-			for(int i = 0; i<length; i++){
+			for(int i = 0; i < length; i++){
 				String name = input.readUTF();
 				int id = input.readInt();
-				int size = input.readInt();
+				long size = input.readLong();
 				files.add(new SharedFile(name,id,size));
+				System.out.println(name + id + size);
 				    
 			}
 			Client.ShowFile();
@@ -64,7 +65,6 @@ public class TcpConnection implements Runnable{
 					Thread.sleep(10);
 					timeout++;
 				}
-				
 			}
 		}
 		catch(Exception e){
@@ -80,7 +80,7 @@ public class TcpConnection implements Runnable{
 		}
 	}
 
-	void sendMessage(String message){
+	static void sendMessage(String message){
 		try {
 			output.writeBytes(message);
 			System.out.println("sent: " + message);
@@ -89,7 +89,7 @@ public class TcpConnection implements Runnable{
 		}
 		
 	}
-	void sendCode (int code){
+	static void sendCode (int code){
 		try {
 			output.writeInt(code);
 			System.out.println("sent: " + code);
@@ -98,9 +98,9 @@ public class TcpConnection implements Runnable{
 		}
 		timeout = 0;
 	}
-	public synchronized void downloadFile(int id){
-		this.sendCode(1);
-		this.sendCode(id);
+	public static synchronized void downloadFile(int id){
+		sendCode(1);
+		sendCode(id);
 		SharedFile download = null;
 		for(SharedFile f : files){
 			if(f.getId() == id){
@@ -120,10 +120,10 @@ public class TcpConnection implements Runnable{
 
 		
 	}
-	public synchronized void uploadFile(String name, int size){
-		this.sendCode(2);
-		this.sendMessage(name);
-		this.sendCode(size);
+	public static synchronized void uploadFile(String name, int size){
+		sendCode(2);
+		sendMessage(name);
+		sendCode(size);
 		try {
 			fileTransfer = new Socket(Client.IP, 50003);
 		} catch (IOException e) {
@@ -131,7 +131,7 @@ public class TcpConnection implements Runnable{
 		new Thread(new Upload(fileTransfer));
 		
 	}
-	public static void interrupt(){
+	public static synchronized void interrupt(){
 		Thread.currentThread().interrupt();
 	}
 }
