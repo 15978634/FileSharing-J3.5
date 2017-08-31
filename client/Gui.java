@@ -146,6 +146,7 @@ public class Gui extends JFrame{
 		upload.addActionListener((ActionEvent e) -> {
 			GUIFileChooser file = new GUIFileChooser();
 			File file2 = file.GetSelectedFile();
+			TcpConnection.uploadFile(file2.getName(), file2);
 		});
 		
 		frame.add(filelist);
