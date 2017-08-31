@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class TcpConnection implements Runnable{
+	private Socket fileTransfer;
 	private Socket connection;
 	private DataInputStream input;
 	private DataOutputStream output;
@@ -92,8 +93,25 @@ public class TcpConnection implements Runnable{
 			e.printStackTrace();
 		}
 	}
-//langer Kommentar
-	
-	
-	
+	public synchronized void downloadFile(int id){
+		this.sendCode(1);
+		this.sendCode(id);
+		try {
+			fileTransfer = new Socket(Client.IP, 50003);
+		} catch (IOException e) {
+		}
+		new Thread(new Download(fileTransfer));
+		
+	}
+	public synchronized void uploadFile(String name, int size){
+		this.sendCode(2);
+		this.sendMessage(name);
+		this.sendCode(size);
+		try {
+			fileTransfer = new Socket(Client.IP, 50003);
+		} catch (IOException e) {
+		}
+		new Thread(new Upload(fileTransfer));
+		
+	}
 }
