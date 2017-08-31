@@ -106,7 +106,8 @@ public class Gui extends JFrame{
 		download.setForeground(Color.decode("#2196F3"));
 		download.setBorder(emptyBorder);
 		download.addActionListener((ActionEvent e) -> {
-			TCP
+			TcpConnection.downloadFile(Integer.parseInt(id.getText()));
+			System.out.println(id.getText());
         });
 		
 		JButton upload = new JButton("Upload");
