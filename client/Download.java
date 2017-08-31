@@ -49,7 +49,6 @@ public class Download implements Runnable {
 			Writer.write(content);
 			System.out.println("4");
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		try {
 			fileTransfer.close();
