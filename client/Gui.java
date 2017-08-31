@@ -71,8 +71,9 @@ public class Gui extends JFrame{
 		disconnect.setBackground(Color.WHITE);
 		disconnect.setForeground(Color.decode("#2196F3"));
 		disconnect.setBorder(emptyBorder);
-		btn.addActionListener((ActionEvent e) -> {
+		disconnect.addActionListener((ActionEvent e) -> {
 			TcpConnection.interrupt();
+			System.out.println("Socket Disconnected");
         });
 		
 		JButton download = new JButton("Download");
