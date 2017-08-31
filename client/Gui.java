@@ -21,6 +21,8 @@ public class Gui extends JFrame{
 	Vector File;
 	public static JTable filelist;
 	
+	public static String value;
+	
 	public JFrame frame;
 
 	public Gui()
@@ -71,10 +73,12 @@ public class Gui extends JFrame{
 			 public void mouseClicked(java.awt.event.MouseEvent evt) {
 			    int row = filelist.rowAtPoint(evt.getPoint());
 			    int col = filelist.columnAtPoint(evt.getPoint());
-			    	if(filelist.getValueAt(row, 1) != null)
-			    	FileID.setText("" +filelist.getValueAt(row, 1));
+				if(filelist.getValueAt(row, 1) != null)
+			    	value = "" + filelist.getValueAt(row, col);
+			    	if(Integer.parseInt(value) >= 0);
+			    	FileID.setText("" + filelist.getValueAt(row, 1));
 			    //System.out.println(col + " " + row);
-			 }
+			 	}
 		});
 
 		JLabel ip = new JLabel("IP:");
