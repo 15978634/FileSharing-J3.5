@@ -33,11 +33,14 @@ public class ClientDownload implements Runnable {
 					fInputStream = new FileInputStream(file);
 					int length = fInputStream.available();
 					byte[] content = new byte[length];
+					
 					fInputStream.read(content);
 					outputStream.write(content);
+					
 					fInputStream.close();
 					outputStream.close();
 					fileshareSocket.close();
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

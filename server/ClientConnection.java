@@ -2,6 +2,7 @@ package server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -34,13 +35,19 @@ public class ClientConnection implements Runnable {
 			
 			outputStream.writeInt(Server.getFiles().size());
 			for (ServerFile file : Server.getFiles()) {
-				outputStream.writeUTF(file.getName());
-				outputStream.writeInt(file.getId());
-				outputStream.writeLong(file.getSize());
+				if (!file.getName().equals("Thumbs.db")) {
+					outputStream.writeUTF(file.getName());
+					outputStream.writeInt(file.getId());
+					outputStream.writeLong(file.getSize());
+
+				} else {
+					File f = new File(Server.getSourceDirectory() +"/Thumbs.db");
+					System.out.println(f.toString());
+					f.delete();
+				}
 			}
 			while(!Thread.currentThread().isInterrupted()) {
 				if (timeoutCounter < 1000) {
-					
 					
 					if (inputStream.available() > 0) {
 						int code = inputStream.readInt();
@@ -52,7 +59,9 @@ public class ClientConnection implements Runnable {
 									break; //client will file runterladen
 							
 							case 2:fileshareSocket = server.acceptFileshare();
-									server.pushToThreadPool(new ClientUpload(fileshareSocket, mQ));
+									long length = inputStream.readLong();
+									String name = inputStream.readUTF();
+									server.pushToThreadPool(new ClientUpload(fileshareSocket, mQ, length, name));
 									break; //client will file hochladen
 									
 							case 3: break; //heartbeat
@@ -82,6 +91,7 @@ public class ClientConnection implements Runnable {
 			
 		} finally {
 			try {
+				outputStream.writeInt(2);
 				clientSocket.close();
 				inputStream.close();
 				outputStream.close();

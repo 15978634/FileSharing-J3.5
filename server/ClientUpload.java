@@ -13,10 +13,15 @@ public class ClientUpload implements Runnable {
 	private DataInputStream inputStream;
 	File newFile;
 	ArrayBlockingQueue<ServerMessage> mQ;
-	public ClientUpload(Socket fileshareSocket, ArrayBlockingQueue<ServerMessage> mQ) {
+	long length;
+	String name;
+	
+	public ClientUpload(Socket fileshareSocket, ArrayBlockingQueue<ServerMessage> mQ, long length, String name) {
+		this.fileshareSocket = fileshareSocket;
+		this.length = length;
+		this.name = name;
 		try {
-			this.fileshareSocket = fileshareSocket;
-		inputStream = new DataInputStream(fileshareSocket.getInputStream());
+			inputStream = new DataInputStream(fileshareSocket.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -26,19 +31,22 @@ public class ClientUpload implements Runnable {
 	@Override
 	public void run() {
 		try {
-			long length = inputStream.readLong();
-			String name = inputStream.readUTF();
 			byte[] content = new byte[(int) length];
 			inputStream.read(content);
-			newFile = new File(Server.getSourceDirectory() + "/" + name);
+			newFile = new File(Server.getSourceDirectory() + "/"+ name);
+			System.out.println("New File received:" + newFile.getName());
 			newFile.createNewFile();
 			FileOutputStream fOutputStream = new FileOutputStream(newFile);
-			fOutputStream.write(content);
-			fOutputStream.close();
-			inputStream.close();
+			
 			int id = Server.getCurrentId();
 			Server.getFiles().add(new ServerFile(name, newFile.toString(), id, newFile.length()));
 			Server.setCurrentId(Server.getCurrentId() + 1);
+			
+			fOutputStream.write(content);
+			fOutputStream.close();
+			inputStream.close();
+			fileshareSocket.close();
+			
 			try {
 				mQ.put(new ServerMessage(1, name, id, newFile.length()));
 			} catch (InterruptedException e) {
@@ -50,5 +58,4 @@ public class ClientUpload implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
 }
