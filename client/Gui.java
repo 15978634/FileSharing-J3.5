@@ -210,7 +210,8 @@ public class Gui extends JFrame{
 	{
 		JFrame error = new JFrame();
 		
-		JOptionPane.showMessageDialog(error, ErrorMessage);
+		JOptionPane.showMessageDialog(error, ErrorMessage,"Inane error",
+			    JOptionPane.ERROR_MESSAGE);
 		
 		error.setVisible(true);
 	}
