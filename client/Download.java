@@ -23,7 +23,7 @@ public class Download implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		savedFile = new File("C:/Katzen" +file.getName());
+		savedFile = new File("//SLEEPLESS/homes$/jannvita17/Documents/FileSharing/" +file.getName());
 		content = new byte[(int) this.file.getSize()];
 
 	}
