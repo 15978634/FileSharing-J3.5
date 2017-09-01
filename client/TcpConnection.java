@@ -92,7 +92,6 @@ public class TcpConnection implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	static void sendCode (int code){
 		try {
