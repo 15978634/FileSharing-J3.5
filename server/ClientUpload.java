@@ -20,7 +20,6 @@ public class ClientUpload implements Runnable {
 		this.fileshareSocket = fileshareSocket;
 		this.length = length;
 		this.name = name;
-		System.out.println(name +";"+length);
 		try {
 			inputStream = new DataInputStream(fileshareSocket.getInputStream());
 		} catch (IOException e) {
@@ -31,13 +30,11 @@ public class ClientUpload implements Runnable {
 	
 	@Override
 	public void run() {
-		System.out.println("hi");
 		try {
 			byte[] content = new byte[(int) length];
 			inputStream.read(content);
-			System.out.println("hi");
 			newFile = new File(Server.getSourceDirectory() + "/"+ name);
-			System.out.println(newFile.toString());
+			System.out.println("New File received:" + newFile.getName());
 			newFile.createNewFile();
 			FileOutputStream fOutputStream = new FileOutputStream(newFile);
 			
