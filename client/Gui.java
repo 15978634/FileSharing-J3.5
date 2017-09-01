@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -209,21 +210,8 @@ public class Gui extends JFrame{
 	{
 		JFrame error = new JFrame();
 		
-		JLabel message = new JLabel(ErrorMessage);
-		message.setBounds(0, 90, 200, 50);
-		message.setHorizontalAlignment(JTextField.CENTER);
-		
-		JButton exit = new JButton("Exit");
-		exit.setBounds(145, 200, 100, 50);
-		exit.setBackground(Color.WHITE);
-		exit.addActionListener((ActionEvent e) -> {
-			error.dispose();
-        });
-		
-		error.add(exit);
-		error.add(message);
-		error.setSize(400, 300);
-		error.setTitle("ERROR");
+		JOptionPane.showMessageDialog(error, ErrorMessage,"Inane error",
+			    JOptionPane.ERROR_MESSAGE);
 		
 		error.setVisible(true);
 	}

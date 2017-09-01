@@ -92,7 +92,6 @@ public class TcpConnection implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	static void sendCode (int code){
 		try {
@@ -131,6 +130,7 @@ public class TcpConnection implements Runnable{
 			System.out.println("Download started!");
 		}else{
 			System.out.println("This file does not exist!");
+			Gui.showError("File does not exist!");
 		}
 	}
 	public static synchronized void uploadFile(String name, File file){
