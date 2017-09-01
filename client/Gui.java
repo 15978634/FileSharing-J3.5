@@ -73,9 +73,11 @@ public class Gui extends JFrame{
 			 public void mouseClicked(java.awt.event.MouseEvent evt) {
 			    int row = filelist.rowAtPoint(evt.getPoint());
 			    int col = filelist.columnAtPoint(evt.getPoint());
+			    int length = data.size();
+			    System.out.println(row + " " + col);
 				if(filelist.getValueAt(row, 1) != null)
 			    	value = "" + filelist.getValueAt(row, col);
-			    	if(Integer.parseInt(value) >= 0);
+			    	if(row * 3 < length);
 			    	FileID.setText("" + filelist.getValueAt(row, 1));
 			    //System.out.println(col + " " + row);
 			 	}
