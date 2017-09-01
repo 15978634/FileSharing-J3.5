@@ -44,6 +44,7 @@ public class Download implements Runnable {
 			Writer = new FileOutputStream(savedFile);
 			System.out.println("3");
 		} catch (FileNotFoundException e) {
+			Gui.showError("File not found!");
 		}
 		try {
 			Writer.write(content);
