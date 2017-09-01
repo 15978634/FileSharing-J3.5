@@ -15,7 +15,6 @@ public class Client {
 		EventQueue.invokeLater(() ->{
 			Gui gui = new Gui();
 			gui.frame.setVisible(true);
-			
 		});
 	}
 	public static void connectSocket(String ip, int port){
