@@ -45,7 +45,6 @@ public class TcpConnection implements Runnable{
 			while(!Thread.currentThread().isInterrupted()){
 				if(input.available()>0){
 					int code = input.readInt();
-					String msg;
 					switch(code){ 
 					case 1:{ //new file
 						String name = input.readUTF();
@@ -127,14 +126,12 @@ public class TcpConnection implements Runnable{
 			fileTransfer = new Socket(Client.IP, 50003);
 		} catch (IOException e) {
 		}
-		if(files != null){
+		if(files != null && download != null){
 			new Thread(new Download(fileTransfer, download)).start();
 			System.out.println("Download started!");
 		}else{
 			System.out.println("This file does not exist!");
 		}
-
-		
 	}
 	public static synchronized void uploadFile(String name, File file){
 		sendCode(2);
