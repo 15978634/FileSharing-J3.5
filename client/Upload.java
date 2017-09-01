@@ -34,7 +34,10 @@ public class Upload implements Runnable{
 		} catch (IOException e) {
 		}
 		try {
+			System.out.println(content.length);
 			output.write(content);
+
+			System.out.println("content sent");
 		} catch (IOException e) {
 		}
 		try {
