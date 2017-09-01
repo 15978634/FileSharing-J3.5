@@ -28,7 +28,7 @@ public class ClientDownload implements Runnable {
 		for (ServerFile f : Server.getFiles()) {
 			if (f.getId() == fileId) {
 				File file = new File(f.getLocation());
-				FileInputStream fInputStream;
+				FileInputStream fInputStream = null;
 				try {
 					fInputStream = new FileInputStream(file);
 					int length = fInputStream.available();
@@ -37,13 +37,20 @@ public class ClientDownload implements Runnable {
 					fInputStream.read(content);
 					outputStream.write(content);
 					
-					fInputStream.close();
-					outputStream.close();
-					fileshareSocket.close();
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} finally {
+					try {
+						fInputStream.close();
+						outputStream.close();
+						fileshareSocket.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 				}
 			}
 		}

@@ -30,22 +30,21 @@ public class ClientUpload implements Runnable {
 	
 	@Override
 	public void run() {
+		FileOutputStream fOutputStream = null;
 		try {
 			byte[] content = new byte[(int) length];
 			inputStream.read(content);
 			newFile = new File(Server.getSourceDirectory() + "/"+ name);
 			System.out.println("New File received:" + newFile.getName());
 			newFile.createNewFile();
-			FileOutputStream fOutputStream = new FileOutputStream(newFile);
+			fOutputStream = new FileOutputStream(newFile);
 			
 			int id = Server.getCurrentId();
 			Server.getFiles().add(new ServerFile(name, newFile.toString(), id, newFile.length()));
 			Server.setCurrentId(Server.getCurrentId() + 1);
 			
 			fOutputStream.write(content);
-			fOutputStream.close();
-			inputStream.close();
-			fileshareSocket.close();
+			
 			
 			try {
 				mQ.put(new ServerMessage(1, name, id, newFile.length()));
@@ -56,6 +55,15 @@ public class ClientUpload implements Runnable {
 			
 		}	catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				fOutputStream.close();
+				inputStream.close();
+				fileshareSocket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
