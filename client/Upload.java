@@ -20,6 +20,7 @@ public class Upload implements Runnable{
 		try {
 			Reader = new FileInputStream(this.file);
 		} catch (FileNotFoundException e) {
+			Gui.showError("File not Found!");
 		}
 		try {
 			output = new DataOutputStream(fileTransfer.getOutputStream());
@@ -45,8 +46,6 @@ public class Upload implements Runnable{
 			Reader.close();
 			fileTransfer.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 		

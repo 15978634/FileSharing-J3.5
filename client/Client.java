@@ -25,8 +25,7 @@ public class Client {
 			connectionInit(socket);	
 			System.out.println("Socket connected!");
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Gui.showError("Could not find this Ip or Port!");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
