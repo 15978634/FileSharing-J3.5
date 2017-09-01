@@ -45,9 +45,14 @@ public class TcpConnection implements Runnable{
 			while(!Thread.currentThread().isInterrupted()){
 				if(input.available()>0){
 					int code = input.readInt();
-					String msg = input.readUTF();
+					String msg;
 					switch(code){ 
 					case 1:{ //new file
+						String name = input.readUTF();
+						int id = input.readInt();
+						long size = input.readLong();
+						files.add(new SharedFile(name, id, size));
+						Gui.ShowFiles(files);
 					break; 
 					}
 					case 2:{ //Server shutdown
@@ -56,7 +61,7 @@ public class TcpConnection implements Runnable{
 					}
 					case 3: break;
 					}
-					System.out.println("received: " + code + " message: " + msg);
+					System.out.println("received: " + code);
 				}
 				if(timeout>500){
 					sendCode(3);
