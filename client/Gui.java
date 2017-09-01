@@ -195,12 +195,36 @@ public class Gui extends JFrame{
 			}
 			
 			Vector tempFile = new Vector();
-			tempFile.add(tempfile.getName());
-			tempFile.add(tempfile.getId());
-			tempFile.add(tempfile.getSize());
+			System.out.println(tempfile.getName());
+				tempFile.add(tempfile.getName());
+				tempFile.add(tempfile.getId());
+				tempFile.add(tempfile.getSize());
+				data.add(tempFile);
 			
-			data.add(tempFile);
 			filelist.repaint();
 		}
+	}
+	
+	public static void showError(String ErrorMessage)
+	{
+		JFrame error = new JFrame();
+		
+		JLabel message = new JLabel(ErrorMessage);
+		message.setBounds(0, 90, 200, 50);
+		message.setHorizontalAlignment(JTextField.CENTER);
+		
+		JButton exit = new JButton("Exit");
+		exit.setBounds(145, 200, 100, 50);
+		exit.setBackground(Color.WHITE);
+		exit.addActionListener((ActionEvent e) -> {
+			error.dispose();
+        });
+		
+		error.add(exit);
+		error.add(message);
+		error.setSize(400, 300);
+		error.setTitle("ERROR");
+		
+		error.setVisible(true);
 	}
 }

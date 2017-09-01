@@ -4,7 +4,6 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileSystemView;
 
 public class GUIFileChooser {
