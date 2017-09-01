@@ -21,6 +21,8 @@ public class Gui extends JFrame{
 	Vector File;
 	public static JTable filelist;
 	
+	public static String value;
+	
 	public JFrame frame;
 
 	public Gui()
@@ -37,9 +39,9 @@ public class Gui extends JFrame{
 		
 		 data = new Vector();
 			File = new Vector();
-				File.add("FILE_NAME");
-				File.add("FILE_ID");
-				File.add("FILE_SIZE");
+				File.add("File Name");
+				File.add("File ID");
+				File.add("File Size");
 				
 			data.add(File);
 		
@@ -71,10 +73,10 @@ public class Gui extends JFrame{
 			 public void mouseClicked(java.awt.event.MouseEvent evt) {
 			    int row = filelist.rowAtPoint(evt.getPoint());
 			    int col = filelist.columnAtPoint(evt.getPoint());
-			    	filelist.getValueAt(row, 1);
-			    	FileID.setText("" +filelist.getValueAt(row, 1));
+			    if(row >= 0)
+			    	FileID.setText("" + filelist.getValueAt(row, 1));
 			    //System.out.println(col + " " + row);
-			 }
+			 	}
 		});
 
 		JLabel ip = new JLabel("IP:");
@@ -162,7 +164,7 @@ public class Gui extends JFrame{
 		frame.add(portfield);
 		
 		frame.getContentPane().setBackground(Color.decode("#2196F3"));
-		frame.setTitle("FileSharing");
+		frame.setTitle("Cat Sharing");
 		frame.setSize(800, 600);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -171,6 +173,13 @@ public class Gui extends JFrame{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void ShowFiles(ArrayList<SharedFile> files)
 	{
+		data.clear();
+		Vector heads = new Vector();
+		heads.add("File Name");
+		heads.add("File ID");
+		heads.add("File Size");
+		
+		data.add(heads);
 		
 		for(int i = 0; i < files.size(); i++){
 			SharedFile tempfile = null;

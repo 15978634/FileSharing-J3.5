@@ -45,9 +45,14 @@ public class TcpConnection implements Runnable{
 			while(!Thread.currentThread().isInterrupted()){
 				if(input.available()>0){
 					int code = input.readInt();
-					String msg = input.readUTF();
+					String msg;
 					switch(code){ 
 					case 1:{ //new file
+						String name = input.readUTF();
+						int id = input.readInt();
+						long size = input.readLong();
+						files.add(new SharedFile(name, id, size));
+						Gui.ShowFiles(files);
 					break; 
 					}
 					case 2:{ //Server shutdown
@@ -56,7 +61,7 @@ public class TcpConnection implements Runnable{
 					}
 					case 3: break;
 					}
-					System.out.println("received: " + code + " message: " + msg);
+					System.out.println("received: " + code);
 				}
 				if(timeout>500){
 					sendCode(3);
@@ -83,7 +88,7 @@ public class TcpConnection implements Runnable{
 
 	static void sendMessage(String message){
 		try {
-			output.writeBytes(message);
+			output.writeUTF(message);
 			System.out.println("sent: " + message);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -133,13 +138,14 @@ public class TcpConnection implements Runnable{
 	}
 	public static synchronized void uploadFile(String name, File file){
 		sendCode(2);
+		sendCode(file.length());
 		sendMessage(name);
-		sendCode(file.getTotalSpace());
+
 		try {
 			fileTransfer = new Socket(Client.IP, 50003);
 		} catch (IOException e) {
 		}
-		new Thread(new Upload(fileTransfer, file));
+		new Thread(new Upload(fileTransfer, file)).start();
 		
 	}
 	public static synchronized void interrupt(){

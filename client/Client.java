@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+//bei Fragen melden unter +43 699 110 45224
 
 public class Client {
 	public static String IP;
