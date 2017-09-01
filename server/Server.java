@@ -16,11 +16,10 @@ public class Server {
 	private static ArrayList<ServerFile> files;
 	private ServerSocket fileshare;
 	private static int currentId; 
-	private static File sourceDirectory = new File("//SLEEPLESS/homes$/lukaweis17/Documents/GitHub/FileSharing Project/FileSharing/FileSharing-J3.5/ServerFiles");
+	private static File sourceDirectory = new File("//SLEEPLESS/homes$/lukaweis17/Documents/GitHub/FileSharing Project/FileSharing/FileSharing-J3.5/ServerFiles/");
 	
 	public static void main(String[] args) {
 		new Server();
-		
 	}
 	
 	public void sendToAllClients(ServerMessage message) throws InterruptedException {

@@ -52,7 +52,9 @@ public class ClientConnection implements Runnable {
 									break; //client will file runterladen
 							
 							case 2:fileshareSocket = server.acceptFileshare();
-									server.pushToThreadPool(new ClientUpload(fileshareSocket, mQ));
+									long length = inputStream.readLong();
+									String name = inputStream.readUTF();
+									server.pushToThreadPool(new ClientUpload(fileshareSocket, mQ, length, name));
 									break; //client will file hochladen
 									
 							case 3: break; //heartbeat
